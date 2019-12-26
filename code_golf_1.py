@@ -31,25 +31,55 @@ File: code_golf_1.py
 
 """
 Function checks if a number (numb) appears in a list
+False = is in list
+True  = is not in list
 """
 def isInList(list,numb):
-    print("I am now in isInList")
+    for i in list:
+        if(i==numb):
+            return False
+    return True
 
+"""
+Function checks if a certain number is within a list that uses lists within lists.
+"""
+def numInList(list, numb):
+    for j in range(0, len(list)):
+        if(list[j][0]==numb):
+            id = list[j][1]
+            list[j][1] = list[j][1] + 1
+            return id,list
 
 """
 Sort the integer list into single appearing systems
 """
 def sortOnlyOnceperlist(list):
-    print("I am now in sortOnlyOnceperlist")
-    startList = [] # Used to track which numbers been seen
+    startList = [[]] # Used to track which numbers been seen
     freqsList = [] # Used to track frequency of startList
 
     for i in list:
-        print(i)
+        if(isInList(startList[0],i)):
+            startList[0].append(i)
+            freqsList.append([i,1])
+        else:
+            [id,freqsList] = numInList(freqsList,i)
+            if(len(startList)-1<id):
+                startList.append([])
+            startList[id].append(i)
 
-        if(isInList(startList,i)):
-            if()
+    return startList
 
 
-sortOnlyOnceperlist([1, 2, 4])
-isInList([1],1)
+# Test cases
+print("Test case 1: ")
+print("Input: [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2]")
+print("Output: ",sortOnlyOnceperlist([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2]))
+print("Expected output: [[1,2],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1],[1]]")
+print("Test case 2: \n")
+print("Input: [1,3,4,2,6,5,1,8,3,8]")
+print("Output: ", sortOnlyOnceperlist([1,3,4,2,6,5,1,8,3,8]))
+print("Expected output: [[1,3,4,2,6,5,8],[1,3,8]]")
+print("Test case 3: \n")
+print("Input: [5,9,12,5,2,71,23,4,7,2,6,8,2,4,8,9,0,65,4,5,3,2]")
+print("Output: ",sortOnlyOnceperlist([5,9,12,5,2,71,23,4,7,2,6,8,2,4,8,9,0,65,4,5,3,2]))
+print("Expected output: [[5,9,12,2,71,23,4,7,6,8,0,65,3],[5,4,8,9,2],[4,5,2],[2]]")
